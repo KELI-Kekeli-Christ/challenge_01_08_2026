@@ -1,91 +1,28 @@
-# Challenge 01/08/2026
+# 🚀 Système de Recommandation : Dépôts GitHub
 
-Ce dépôt contient un mini projet de recommandation basé sur un jeu de données de films fourni dans le dossier data.
+Ce projet est une solution proposée pour le **Challenge 01/08/2026**.
+Il implémente un système de recommandation de **Dépôts GitHub** basé sur le traitement du langage naturel (NLP) via TF-IDF et la Similarité Cosinus.
 
-## Objectif du challenge
+## 🎯 Objectif du Challenge
+L'objectif initial était de comprendre un code existant (qui recommandait des films à partir de listes d'acteurs) et de l'adapter à un nouveau contexte.
+Pour ce faire, j'ai choisi de construire un tout nouveau jeu de données à partir de l'**API GitHub** et d'améliorer drastiquement les mathématiques sous-jacentes du modèle original.
 
-Le but du challenge n’est pas de tout réinventer. L’idée est plutôt de comprendre le code existant, d’adapter une solution de recommandation à un contexte différent, et de montrer que l’on sait travailler avec des données réelles en les transformant pour qu’un algorithme puisse les utiliser.
+## 📊 Dataset : `github_repositories.csv`
+Le dossier `data/` contient maintenant un jeu de données extrait dynamiquement (via le script `fetch_github.py` ajouté au projet) contenant 500 dépôts GitHub très populaires (ayant plus de 5000 étoiles).
+Les colonnes clés combinées pour générer des recommandations sont :
+- `description` : Le résumé narratif du projet.
+- `language` : Le langage de programmation principal.
+- `topics` : Les tags (labels) associés au dépôt.
 
-En pratique, au lieu de se limiter aux données de film déjà utilisées ici, on peut essayer d’utiliser une autre source de données pertinente, puis adapter le code pour qu’il fonctionne avec cette nouvelle source.
+## 🛠️ Améliorations de l'Algorithme (Notebook)
+Le notebook `recomendation.ipynb` a été mis à jour avec les améliorations suivantes :
 
-> Une bonne lecture du code est importante : si on le comprend vraiment bien, il se peut qu’il contienne une erreur ou un point à améliorer.
+1. **Extraction Textuelle via TF-IDF** : Au lieu de construire un vocabulaire binaire manuel (qui compte simplement la présence d'un mot), le modèle utilise désormais le `TfidfVectorizer` (scikit-learn). Cela pénalise les termes trop fréquents (ex: 'software', 'tool') et valorise les mots-clés spécifiques et identifiants (ex: 'kubernetes', 'react').
+2. **Similarité Cosinus (Cosine Similarity)** : Le code original utilisait un simple produit scalaire sur des vecteurs non normalisés, ce qui avantageait artificiellement les films/éléments ayant le plus de métadonnées, peu importe la similarité réelle. En passant à la Similarité Cosinus, l'algorithme normalise les données et calcule l'angle entre les vecteurs, offrant un score précis entre `0` et `1`.
 
-## Structure du dépôt
-
-- [data/](data/) : contient le jeu de données utilisé par le notebook.
-- [recomendation.ipynb](recomendation.ipynb) : notebook principal contenant la logique de recommandation.
-- [README.md](README.md) : ce fichier d’explication.
-
-### Contenu du dossier data
-
-Le dossier [data/](data/) contient actuellement :
-
-- [data/tmdb_5000_credits.csv](data/tmdb_5000_credits.csv)
-
-Ce fichier contient des informations de films avec notamment :
-
-- movie_id : identifiant du film
-- title : titre du film
-- cast : liste des acteurs
-- crew : liste des membres de l’équipe de production
-
-Ces colonnes servent de base à la recommandation actuelle.
-
-### Contenu du notebook de recommandation
-
-Le notebook [recomendation.ipynb](recomendation.ipynb) fait les actions suivantes :
-
-1. Charge le fichier CSV depuis [data/tmdb_5000_credits.csv](data/tmdb_5000_credits.csv)
-2. Lit et parse les colonnes cast et crew
-3. Construit des vecteurs de caractéristiques à partir des personnes présentes dans ces colonnes
-4. Calcule une similarité entre films avec un produit scalaire sur ces vecteurs
-5. Retourne une liste de films recommandés à partir d’un titre donné
-
-## Comment forker le dépôt
-
-1. Ouvrez la page GitHub du dépôt.
-2. Cliquez sur le bouton Fork en haut à droite.
-3. Choisissez votre compte GitHub comme destination.
-4. Une fois le fork créé, clonez votre copie locale :
-
-```bash
-git clone https://github.com/VOTRE_NOM_UTILISATEUR/challenge_01_08_2026.git
-cd challenge_01_08_2026
-```
-
-## Comment travailler localement
-
-Avant de commencer, créez une branche de travail :
-
-```bash
-git checkout -b feature/ma-proposition
-```
-
-Puis faites vos modifications, ajoutez les fichiers et validez :
-
-```bash
-git add .
-git commit -m "Ajout de ma solution"
-```
-
-Enfin, poussez la branche sur votre fork :
-
-```bash
-git push origin feature/ma-proposition
-```
-
-## Comment ouvrir une Pull Request
-
-1. Ouvrez votre fork sur GitHub.
-2. Cliquez sur Compare & pull request.
-3. Décrivez clairement ce que vous avez changé.
-4. Expliquez votre approche de recommandation et les données utilisées.
-5. Soumettez la pull request.
-
-## Conseils importants
-
-- Le but n’est pas de réécrire un système de recommandation complètement différent de zéro.
-- Il faut surtout montrer que vous comprenez le flux de données et que vous savez l’adapter.
-- Si vous changez de source de données, il faut aussi adapter la logique de préparation des caractéristiques.
-- Une bonne compréhension du code peut révéler une erreur cachée ou un biais dans l’implémentation.
-
+## 🚀 Comment tester localement
+1. Assurez-vous d'avoir installé les dépendances requises :
+   ```bash
+   pip install pandas numpy scikit-learn matplotlib
+   ```
+2. Ouvrez le notebook `recomendation.ipynb` dans votre environnement préféré (Jupyter, VS Code) et exécutez l'ensemble des cellules pour voir l'algorithme recommander des dépôts similaires !
