@@ -1,3 +1,11 @@
+<p align="center">
+  <a href="README.md"><b>English</b></a>
+  &nbsp;·&nbsp;
+  <a href="README.fr.md">Français</a>
+  &nbsp;·&nbsp;
+  <a href="README.es.md">Español</a>
+</p>
+
 # Challenge 01/08/2026
 
 Ce dépôt contient un mini projet de recommandation basé sur un jeu de données de films fourni dans le dossier data.
